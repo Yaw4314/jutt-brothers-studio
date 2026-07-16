@@ -20,7 +20,9 @@ function CrestMesh() {
       curveSegments: 8,
     };
     data.paths.forEach((path) => {
-      path.toShapes(true).forEach((shape) => {
+      // SVGLoader.toShapes(isCCW) — types dropped the arg in newer three; keep runtime call.
+      const shapes = (path.toShapes as (isCCW?: boolean) => THREE.Shape[])(true);
+      shapes.forEach((shape) => {
         geos.push(new THREE.ExtrudeGeometry(shape, extrude));
       });
     });
