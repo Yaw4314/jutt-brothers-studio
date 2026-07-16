@@ -1,24 +1,51 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SmoothScroll } from "@/components/site/SmoothScroll";
+import { Nav } from "@/components/site/Nav";
+import { Hero } from "@/components/site/Hero";
+import { Problem } from "@/components/site/Problem";
+import { WhatWeDo } from "@/components/site/WhatWeDo";
+import { HowItWorks } from "@/components/site/HowItWorks";
+import { Work } from "@/components/site/Work";
+import { GetAQuote } from "@/components/site/GetAQuote";
+import { About } from "@/components/site/About";
+import { ContactFooter } from "@/components/site/ContactFooter";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Jutt Brothers — Restaurant websites, built before you say yes" },
+      {
+        name: "description",
+        content:
+          "A design and engineering studio in Rawalpindi. We build websites, ordering and booking tools for independent restaurants — starting with a free live demo of your site.",
+      },
+      { property: "og:title", content: "Jutt Brothers — Restaurant websites" },
+      {
+        property: "og:description",
+        content:
+          "We build your restaurant's website before you even say yes. Free live demo, then decide.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <SmoothScroll>
+      <main className="relative bg-[#050505] text-ink">
+        <Nav />
+        <Hero />
+        <Problem />
+        <WhatWeDo />
+        <HowItWorks />
+        <Work />
+        <GetAQuote />
+        <About />
+        <ContactFooter />
+      </main>
+    </SmoothScroll>
   );
 }
