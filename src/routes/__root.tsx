@@ -81,10 +81,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "A design and engineering studio in Rawalpindi building websites, ordering and booking tools for independent restaurants.",
+          "A design and engineering studio in Rawalpindi. We build websites, ordering and booking tools for independent restaurants — starting with a free live demo of your site.",
       },
       { name: "author", content: "Jutt Brothers" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:title", content: "Jutt Brothers — Restaurant websites, built before you say yes" },
+      { name: "twitter:title", content: "Jutt Brothers — Restaurant websites, built before you say yes" },
+      { property: "og:description", content: "A design and engineering studio in Rawalpindi. We build websites, ordering and booking tools for independent restaurants — starting with a free live demo of your site." },
+      { name: "twitter:description", content: "A design and engineering studio in Rawalpindi. We build websites, ordering and booking tools for independent restaurants — starting with a free live demo of your site." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/743fdcfe-1259-4a87-9a49-38aa8b4267fd/id-preview-b34c7efc--af2ca46a-2df0-4aca-9caf-0b43546497a8.lovable.app-1784173018865.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/743fdcfe-1259-4a87-9a49-38aa8b4267fd/id-preview-b34c7efc--af2ca46a-2df0-4aca-9caf-0b43546497a8.lovable.app-1784173018865.png" },
+      { property: "og:type", content: "website" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

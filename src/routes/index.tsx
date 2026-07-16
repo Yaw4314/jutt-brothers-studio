@@ -19,11 +19,11 @@ export const Route = createFileRoute("/")({
         content:
           "A design and engineering studio in Rawalpindi. We build websites, ordering and booking tools for independent restaurants — starting with a free live demo of your site.",
       },
-      { property: "og:title", content: "Jutt Brothers — Restaurant websites" },
+      { property: "og:title", content: "Jutt Brothers — Restaurant websites, built before you say yes" },
       {
         property: "og:description",
         content:
-          "We build your restaurant's website before you even say yes. Free live demo, then decide.",
+          "A design and engineering studio in Rawalpindi. We build websites, ordering and booking tools for independent restaurants — starting with a free live demo of your site.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
