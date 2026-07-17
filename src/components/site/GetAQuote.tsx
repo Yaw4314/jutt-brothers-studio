@@ -6,8 +6,9 @@ export function GetAQuote() {
     <section
       ref={ref}
       id="quote"
-      className="border-t border-[color:var(--border)] px-6 py-32 md:px-14 md:py-48"
+      className="relative z-[1] bg-[#050505] border-t border-[color:var(--border)] px-6 py-32 md:px-14 md:py-48"
     >
+
       <div className="mx-auto max-w-[1000px] text-center">
         <p data-reveal className="mb-6 font-sans text-[11px] uppercase tracking-[0.32em] text-gold">
           Pricing
