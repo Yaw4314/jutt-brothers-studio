@@ -47,8 +47,9 @@ export function ContactFooter() {
     <footer
       ref={ref}
       id="contact"
-      className="border-t border-[color:var(--border)] bg-[#050505] px-6 pt-32 pb-16 md:px-14 md:pt-48"
+      className="relative z-[1] border-t border-[color:var(--border)] bg-[#050505] px-6 pt-32 pb-16 md:px-14 md:pt-48"
     >
+
       <div className="mx-auto max-w-[1200px]">
         <div className="grid gap-16 md:grid-cols-[1.1fr_1fr] md:gap-24">
           <div>

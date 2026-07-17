@@ -34,59 +34,82 @@ export function HowItWorks() {
 
   useGSAP(
     () => {
-      if (!ref.current || prefersReducedMotion()) return;
-      const panels = ref.current.querySelectorAll<HTMLElement>("[data-step]");
+      if (!ref.current) return;
+      const panels = Array.from(
+        ref.current.querySelectorAll<HTMLElement>("[data-step]"),
+      );
+
+      if (prefersReducedMotion()) {
+        // Reduced motion: no pin, no scrub. Stack panels statically.
+        gsap.set(panels, { position: "relative", opacity: 1, y: 0 });
+        return;
+      }
 
       const ctx = gsap.context(() => {
-        panels.forEach((panel, i) => {
-          if (i === 0) return;
-          gsap.set(panel, { opacity: 0, y: 32 });
+        // Initial state
+        panels.forEach((p, i) => {
+          gsap.set(p, { opacity: i === 0 ? 1 : 0, y: i === 0 ? 0 : 32 });
         });
 
-        ScrollTrigger.create({
-          trigger: ref.current!,
-          start: "top top",
-          end: () => `+=${panels.length * 90}%`,
-          pin: true,
-          scrub: 0.6,
-          onUpdate: (self) => {
-            const idx = Math.min(
-              panels.length - 1,
-              Math.floor(self.progress * panels.length),
-            );
-            panels.forEach((p, i) => {
-              gsap.to(p, {
-                opacity: i === idx ? 1 : i < idx ? 0.15 : 0,
-                y: i === idx ? 0 : i < idx ? -12 : 32,
-                duration: 0.5,
-                ease: "power2.out",
-                overwrite: "auto",
-              });
-            });
-            const progressEl = ref.current!.querySelector<HTMLElement>("[data-progress]");
-            if (progressEl) progressEl.style.width = `${self.progress * 100}%`;
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: ref.current!,
+            start: "top top",
+            end: () => `+=${(panels.length - 1) * 100}%`,
+            pin: true,
+            scrub: true,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              const progressEl =
+                ref.current!.querySelector<HTMLElement>("[data-progress]");
+              if (progressEl) progressEl.style.width = `${self.progress * 100}%`;
+            },
           },
         });
+
+        // Cross-fade each panel into the next
+        for (let i = 0; i < panels.length - 1; i++) {
+          tl.to(panels[i], { opacity: 0, y: -16, ease: "power2.inOut" }, i)
+            .fromTo(
+              panels[i + 1],
+              { opacity: 0, y: 32 },
+              { opacity: 1, y: 0, ease: "power2.inOut" },
+              i,
+            );
+        }
       }, ref);
 
-      return () => ctx.revert();
+      // Recompute after Lenis + fonts/images settle
+      const refresh = () => ScrollTrigger.refresh();
+      const t = window.setTimeout(refresh, 50);
+      if (document.fonts?.ready) document.fonts.ready.then(refresh).catch(() => {});
+      window.addEventListener("load", refresh);
+
+      return () => {
+        window.clearTimeout(t);
+        window.removeEventListener("load", refresh);
+        ctx.revert();
+      };
     },
     { scope: ref },
   );
 
   return (
-    <section id="process" className="border-t border-[color:var(--border)]">
+    <section
+      id="process"
+      className="relative z-[1] bg-[#050505] border-t border-[color:var(--border)]"
+    >
       <div ref={ref} className="relative h-[100svh] w-full overflow-hidden bg-[#050505]">
-        <div className="absolute inset-x-0 top-24 z-10 px-6 md:px-14">
+        <div className="absolute inset-x-0 top-24 z-20 px-6 md:px-14">
           <p className="font-sans text-[11px] uppercase tracking-[0.32em] text-gold">
             How it works
           </p>
           <div className="mt-3 h-px w-full bg-[color:var(--border)]">
-            <div data-progress className="h-px w-0 bg-gold transition-[width]" />
+            <div data-progress className="h-px w-0 bg-gold" />
           </div>
         </div>
 
-        <div className="relative z-0 flex h-full items-center px-6 md:px-14">
+        <div className="relative z-10 flex h-full items-center px-6 md:px-14">
           <div className="mx-auto grid w-full max-w-[1200px] gap-12 md:grid-cols-[220px_1fr] md:gap-24">
             <div className="hidden md:block">
               <p className="font-display text-[11px] tracking-[0.32em] text-ink-dim">
@@ -98,7 +121,7 @@ export function HowItWorks() {
                 <article
                   key={s.n}
                   data-step
-                  className="absolute inset-0 flex flex-col justify-center"
+                  className="absolute inset-0 flex flex-col justify-center will-change-[transform,opacity]"
                 >
                   <span className="font-display text-[11px] tracking-[0.32em] text-gold">
                     Step {s.n}

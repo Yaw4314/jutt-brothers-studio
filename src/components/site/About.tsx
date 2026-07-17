@@ -6,8 +6,9 @@ export function About() {
     <section
       ref={ref}
       id="about"
-      className="border-t border-[color:var(--border)] px-6 py-32 md:px-14 md:py-48"
+      className="relative z-[1] bg-[#050505] border-t border-[color:var(--border)] px-6 py-32 md:px-14 md:py-48"
     >
+
       <div className="mx-auto grid max-w-[1200px] gap-16 md:grid-cols-[1fr_1.4fr] md:gap-24">
         <div>
           <p data-reveal className="mb-6 font-sans text-[11px] uppercase tracking-[0.32em] text-gold">

@@ -22,11 +22,23 @@ function LenisGsapBridge() {
     gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
 
+    // Recompute ScrollTrigger start/end offsets once Lenis is wired,
+    // and again after fonts and full page load settle final layout.
+    const refresh = () => ScrollTrigger.refresh();
+    const t = window.setTimeout(refresh, 60);
+    if (typeof document !== "undefined" && document.fonts?.ready) {
+      document.fonts.ready.then(refresh).catch(() => {});
+    }
+    window.addEventListener("load", refresh);
+
     return () => {
+      window.clearTimeout(t);
+      window.removeEventListener("load", refresh);
       lenis.off("scroll", onScroll);
       gsap.ticker.remove(raf);
     };
   }, [lenis]);
+
 
   return null;
 }

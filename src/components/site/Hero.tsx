@@ -1,11 +1,15 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Crest3D } from "./Crest3D";
 import { prefersReducedMotion } from "@/lib/motion";
 
+if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
+
 export function Hero() {
-  const rootRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLElement>(null);
+  const canvasWrapRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
@@ -16,6 +20,26 @@ export function Hero() {
         .from(".hero-tagline", { y: 20, opacity: 0, duration: 0.9 }, "-=0.5")
         .from(".hero-cta", { y: 16, opacity: 0, duration: 0.7 }, "-=0.5")
         .from(".hero-cue", { opacity: 0, duration: 0.6 }, "-=0.3");
+
+      // Fade the 3D canvas out as the hero exits so it can't bleed into
+      // sections below. When opacity hits 0 we also drop pointer events.
+      if (canvasWrapRef.current && rootRef.current) {
+        const wrap = canvasWrapRef.current;
+        gsap.to(wrap, {
+          opacity: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: rootRef.current,
+            start: "bottom 80%",
+            end: "bottom top",
+            scrub: true,
+            onUpdate: (self) => {
+              wrap.style.pointerEvents = self.progress > 0.98 ? "none" : "none";
+              wrap.style.visibility = self.progress >= 1 ? "hidden" : "visible";
+            },
+          },
+        });
+      }
     },
     { scope: rootRef },
   );
@@ -24,14 +48,14 @@ export function Hero() {
     <section
       id="top"
       ref={rootRef}
-      className="relative h-[100svh] w-full overflow-hidden bg-[#050505]"
+      className="relative z-0 h-[100svh] w-full overflow-hidden bg-[#050505]"
     >
-      <div className="absolute inset-0">
+      <div ref={canvasWrapRef} className="pointer-events-none absolute inset-0 z-0">
         <Crest3D />
       </div>
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80" />
+      <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-black/60 via-transparent to-black/80" />
 
-      <div className="relative z-10 flex h-full flex-col justify-end px-6 pb-16 md:px-14 md:pb-24">
+      <div className="relative z-[2] flex h-full flex-col justify-end px-6 pb-16 md:px-14 md:pb-24">
         <p className="hero-eyebrow font-sans text-[11px] uppercase tracking-[0.32em] text-gold">
           Rawalpindi &middot; Hospitality web design
         </p>
@@ -61,7 +85,7 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="hero-cue absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.4em] text-ink-dim">
+      <div className="hero-cue absolute bottom-6 left-1/2 z-[2] -translate-x-1/2 text-[10px] uppercase tracking-[0.4em] text-ink-dim">
         Scroll
       </div>
     </section>

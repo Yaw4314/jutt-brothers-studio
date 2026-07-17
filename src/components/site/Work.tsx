@@ -60,8 +60,9 @@ export function Work() {
     <section
       ref={ref}
       id="work"
-      className="border-t border-[color:var(--border)] px-6 py-32 md:px-14 md:py-48"
+      className="relative z-[1] bg-[#050505] border-t border-[color:var(--border)] px-6 py-32 md:px-14 md:py-48"
     >
+
       <div className="mx-auto max-w-[1400px]">
         <div className="mb-16 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
