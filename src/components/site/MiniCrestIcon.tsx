@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { prefersReducedMotion } from "@/lib/motion";
 
 type IconShape = "gem" | "point" | "ring";
@@ -50,6 +51,11 @@ export function MiniCrestIcon({ shape, hovered }: { shape: IconShape; hovered: b
       gl={{ antialias: true, alpha: true, toneMapping: THREE.ACESFilmicToneMapping }}
       dpr={[1, 2]}
       style={{ background: "transparent" }}
+      onCreated={() => {
+        // These canvases are the last things on the page to settle their size;
+        // refresh so ScrollTrigger's trigger points match the final, settled layout.
+        requestAnimationFrame(() => ScrollTrigger.refresh());
+      }}
     >
       <ambientLight intensity={0.4} color={0x332a1a} />
       <directionalLight position={[3, 4, 5]} intensity={2.4} color={0xfff2d8} />
