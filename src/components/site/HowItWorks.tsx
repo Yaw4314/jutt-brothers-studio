@@ -117,11 +117,13 @@ export function HowItWorks() {
               </p>
             </div>
             <div className="relative min-h-[340px]">
-              {steps.map((s) => (
+              {steps.map((s, i) => (
                 <article
                   key={s.n}
                   data-step
-                  className="absolute inset-0 flex flex-col justify-center will-change-[transform,opacity]"
+                  className={`absolute inset-0 flex flex-col justify-center will-change-[transform,opacity] ${
+                    i === 0 ? "opacity-100" : "opacity-0"
+                  }`}
                 >
                   <span className="font-display text-[11px] tracking-[0.32em] text-gold">
                     Step {s.n}
