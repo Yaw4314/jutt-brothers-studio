@@ -47,6 +47,7 @@ export function Hero() {
         ScrollTrigger.create({
           trigger: rootRef.current,
           start: "bottom top",
+          end: "max",
           onToggle: (self) => setHeroPast(self.isActive),
         });
       }
