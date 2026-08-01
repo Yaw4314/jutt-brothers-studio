@@ -109,6 +109,7 @@ function Shard({ spec, geometry }: { spec: ShardSpec; geometry: THREE.BufferGeom
             color="#E8C77A"
             backside
             samples={6}
+            envMapIntensity={1.6}
             resolution={256}
           />
         </mesh>
@@ -172,9 +173,9 @@ function Scene() {
     <>
       <ambientLight intensity={0.4} color={0x1e1e1e} />
       {/* Angled catchlights along the facet edges */}
-      <pointLight position={[6, 5, 6]} intensity={90} color={0xfff0d2} distance={40} decay={2} />
-      <pointLight position={[-7, -3, 4]} intensity={55} color={0xffd9a0} distance={40} decay={2} />
-      <Environment preset="studio" />
+      <pointLight position={[4, 3.5, 5]} intensity={260} color={0xfff0d2} distance={40} decay={2} />
+      <pointLight position={[-5, -2.5, 4]} intensity={160} color={0xffd9a0} distance={40} decay={2} />
+      <Environment preset="studio" environmentIntensity={1.4} />
       <Headline />
       <group ref={groupRef}>
         {SHARDS.map((spec, i) => (
