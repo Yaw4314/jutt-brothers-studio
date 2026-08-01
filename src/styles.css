@@ -68,6 +68,17 @@
 .reveal { opacity: 0; transform: translateY(24px); will-change: transform, opacity; }
 .reveal-ready { opacity: 1; transform: none; }
 
+/* Base hidden state for scroll reveals, applied before JS runs */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(32px);
+  will-change: opacity, transform;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; }
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
