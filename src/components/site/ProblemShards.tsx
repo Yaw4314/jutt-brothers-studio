@@ -171,6 +171,10 @@ function Scene() {
     return () => window.removeEventListener("pointermove", onMove);
   }, []);
 
+  useEffect(() => {
+    (window as any).__shardGroup = groupRef.current;
+  });
+
   return (
     <>
       <ambientLight intensity={0.4} color={0x1e1e1e} />
