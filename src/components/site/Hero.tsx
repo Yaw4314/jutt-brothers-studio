@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,6 +10,10 @@ if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 export function Hero() {
   const rootRef = useRef<HTMLElement>(null);
   const canvasWrapRef = useRef<HTMLDivElement>(null);
+  // Once the hero has fully scrolled out, the 3D canvas is unmounted so it
+  // never renders alongside the Problem section's shard scene.
+  const [heroPast, setHeroPast] = useState(false);
+
 
   useGSAP(
     () => {
