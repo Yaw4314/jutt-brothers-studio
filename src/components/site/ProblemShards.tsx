@@ -178,10 +178,6 @@ function Scene() {
     return () => window.removeEventListener("pointermove", onMove);
   }, []);
 
-  useEffect(() => {
-    (window as any).__shardGroup = groupRef.current;
-  });
-
   return (
     <>
       <ambientLight intensity={0.4} color={0x1e1e1e} />
@@ -198,7 +194,7 @@ function Scene() {
       <EffectComposer enableNormalPass={false}>
         {/* Headline plane sits at z = 0, camera at z = 9 */}
         <DepthOfField target={[0, 0, 0]} focalLength={0.2} bokehScale={2.4} height={480} />
-        <Bloom intensity={0.65} luminanceThreshold={0.72} luminanceSmoothing={0.25} mipmapBlur />
+        <Bloom intensity={0.5} luminanceThreshold={0.72} luminanceSmoothing={0.25} mipmapBlur />
       </EffectComposer>
     </>
   );
