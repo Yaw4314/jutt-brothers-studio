@@ -30,14 +30,14 @@ type ShardSpec = {
 
 // Fixed, hand-tuned scatter so the composition is stable between renders.
 const SHARDS: ShardSpec[] = [
-  { geo: 0, pos: [-3.4, 1.9, 1.6], rot: [0.4, 0.8, -0.3], scale: 0.26, speed: 0.14, phase: 0.0 },
-  { geo: 1, pos: [3.1, 2.3, -1.4], rot: [-0.6, 0.3, 0.9], scale: 0.4, speed: 0.09, phase: 1.1 },
-  { geo: 2, pos: [-2.4, -1.8, 2.4], rot: [0.9, -0.5, 0.2], scale: 0.18, speed: 0.19, phase: 2.3 },
-  { geo: 3, pos: [3.9, -1.2, 1.1], rot: [0.2, 1.2, 0.6], scale: 0.22, speed: 0.12, phase: 3.4 },
-  { geo: 4, pos: [-4.2, 0.2, -2.2], rot: [-0.3, -0.9, 0.4], scale: 0.46, speed: 0.07, phase: 4.2 },
-  { geo: 5, pos: [1.6, 2.9, 2.1], rot: [0.7, 0.1, -0.8], scale: 0.15, speed: 0.22, phase: 5.0 },
-  { geo: 0, pos: [4.6, 0.6, -0.6], rot: [1.1, -0.4, 0.5], scale: 0.2, speed: 0.16, phase: 0.7 },
-  { geo: 2, pos: [-1.4, -2.6, -1.8], rot: [-0.8, 0.6, 1.0], scale: 0.32, speed: 0.1, phase: 2.9 },
+  { geo: 0, pos: [-2.1, 2.2, 1.6], rot: [0.4, 0.8, -0.3], scale: 0.26, speed: 0.14, phase: 0.0 },
+  { geo: 1, pos: [1.9, 2.6, -1.4], rot: [-0.6, 0.3, 0.9], scale: 0.4, speed: 0.09, phase: 1.1 },
+  { geo: 2, pos: [-1.6, -2.1, 2.2], rot: [0.9, -0.5, 0.2], scale: 0.18, speed: 0.19, phase: 2.3 },
+  { geo: 3, pos: [2.3, -1.6, 1.1], rot: [0.2, 1.2, 0.6], scale: 0.22, speed: 0.12, phase: 3.4 },
+  { geo: 4, pos: [-2.4, 0.4, -2.0], rot: [-0.3, -0.9, 0.4], scale: 0.46, speed: 0.07, phase: 4.2 },
+  { geo: 5, pos: [0.9, 3.1, 2.0], rot: [0.7, 0.1, -0.8], scale: 0.15, speed: 0.22, phase: 5.0 },
+  { geo: 0, pos: [2.5, 0.8, -0.6], rot: [1.1, -0.4, 0.5], scale: 0.2, speed: 0.16, phase: 0.7 },
+  { geo: 2, pos: [-0.9, -3.0, -1.8], rot: [-0.8, 0.6, 1.0], scale: 0.32, speed: 0.1, phase: 2.9 },
 ];
 
 function Shard({ spec, geometry }: { spec: ShardSpec; geometry: THREE.BufferGeometry }) {
@@ -183,7 +183,7 @@ function Scene() {
       </group>
       <EffectComposer enableNormalPass={false}>
         {/* Headline plane sits at z = 0, camera at z = 9 */}
-        <DepthOfField focusDistance={0.02} focalLength={0.12} bokehScale={2.2} height={480} />
+        <DepthOfField target={[0, 0, 0]} focalLength={0.2} bokehScale={2.4} height={480} />
         <Bloom intensity={0.65} luminanceThreshold={0.72} luminanceSmoothing={0.25} mipmapBlur />
       </EffectComposer>
     </>
