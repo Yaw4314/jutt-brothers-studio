@@ -30,13 +30,13 @@ type ShardSpec = {
 
 // Fixed, hand-tuned scatter so the composition is stable between renders.
 const SHARDS: ShardSpec[] = [
-  { geo: 0, pos: [-2.1, 2.2, 1.6], rot: [0.4, 0.8, -0.3], scale: 0.26, speed: 0.14, phase: 0.0 },
-  { geo: 1, pos: [1.9, 2.6, -1.4], rot: [-0.6, 0.3, 0.9], scale: 0.4, speed: 0.09, phase: 1.1 },
-  { geo: 2, pos: [-1.6, -2.1, 2.2], rot: [0.9, -0.5, 0.2], scale: 0.18, speed: 0.19, phase: 2.3 },
-  { geo: 3, pos: [2.3, -1.6, 1.1], rot: [0.2, 1.2, 0.6], scale: 0.22, speed: 0.12, phase: 3.4 },
-  { geo: 4, pos: [-2.4, 0.4, -2.0], rot: [-0.3, -0.9, 0.4], scale: 0.46, speed: 0.07, phase: 4.2 },
-  { geo: 5, pos: [0.9, 3.1, 2.0], rot: [0.7, 0.1, -0.8], scale: 0.15, speed: 0.22, phase: 5.0 },
-  { geo: 0, pos: [2.5, 0.8, -0.6], rot: [1.1, -0.4, 0.5], scale: 0.2, speed: 0.16, phase: 0.7 },
+  { geo: 0, pos: [-2.1, 2.2, 1.6], rot: [0.4, 0.8, -0.3], scale: 0.38, speed: 0.14, phase: 0.0 },
+  { geo: 1, pos: [1.9, 2.6, -1.4], rot: [-0.6, 0.3, 0.9], scale: 0.55, speed: 0.09, phase: 1.1 },
+  { geo: 2, pos: [-1.6, -2.1, 2.2], rot: [0.9, -0.5, 0.2], scale: 0.3, speed: 0.19, phase: 2.3 },
+  { geo: 3, pos: [2.3, -1.6, 1.1], rot: [0.2, 1.2, 0.6], scale: 0.34, speed: 0.12, phase: 3.4 },
+  { geo: 4, pos: [-2.4, 0.4, -2.0], rot: [-0.3, -0.9, 0.4], scale: 0.6, speed: 0.07, phase: 4.2 },
+  { geo: 5, pos: [0.9, 3.1, 2.0], rot: [0.7, 0.1, -0.8], scale: 0.28, speed: 0.22, phase: 5.0 },
+  { geo: 0, pos: [2.5, 0.8, -0.6], rot: [1.1, -0.4, 0.5], scale: 0.44, speed: 0.16, phase: 0.7 },
   { geo: 2, pos: [-0.9, -3.0, -1.8], rot: [-0.8, 0.6, 1.0], scale: 0.32, speed: 0.1, phase: 2.9 },
 ];
 
@@ -107,6 +107,8 @@ function Shard({ spec, geometry }: { spec: ShardSpec; geometry: THREE.BufferGeom
             chromaticAberration={0.04}
             ior={1.4}
             color="#E8C77A"
+            attenuationColor="#E8C77A"
+            attenuationDistance={1.2}
             backside
             samples={6}
             envMapIntensity={1.6}
