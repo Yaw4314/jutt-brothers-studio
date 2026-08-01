@@ -17,15 +17,12 @@ export function useSectionReveal<T extends HTMLElement>(): RefObject<T | null> {
   useGSAP(
     () => {
       if (!ref.current) return;
-      if (prefersReducedMotion()) {
-        gsap.set(ref.current.querySelectorAll("[data-reveal]"), { opacity: 1, y: 0 });
-        return;
-      }
+      if (prefersReducedMotion()) return;
       const targets = ref.current.querySelectorAll("[data-reveal]");
       if (!targets.length) return;
-      gsap.from(targets, {
-        opacity: 0,
-        y: 32,
+      gsap.to(targets, {
+        opacity: 1,
+        y: 0,
         duration: 0.9,
         ease: "power3.out",
         stagger: 0.09,
