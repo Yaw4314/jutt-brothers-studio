@@ -1,45 +1,20 @@
 import { Suspense, useEffect, useMemo, useRef } from "react";
-import { Canvas, useFrame, useLoader } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment } from "@react-three/drei";
-import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
 import * as THREE from "three";
 import gsap from "gsap";
-import crestUrl from "@/assets/jb-crest.svg?url";
+import { useCrestGeometry } from "./crestGeometry";
 import { prefersReducedMotion } from "@/lib/motion";
 
 function CrestMesh() {
-  const data = useLoader(SVGLoader, crestUrl);
   const groupRef = useRef<THREE.Group>(null);
   // Target tilt offsets driven by pointer (in radians)
   const target = useRef({ x: 0, y: 0 });
   // Smoothed offsets applied on top of idle rotation
   const smoothed = useRef({ x: 0, y: 0 });
 
-  const geometries = useMemo(() => {
-    const geos: THREE.BufferGeometry[] = [];
-    const extrude = {
-      depth: 34,
-      bevelEnabled: true,
-      bevelThickness: 5,
-      bevelSize: 3,
-      bevelSegments: 4,
-      curveSegments: 8,
-    };
-    data.paths.forEach((path) => {
-      const shapes = (path.toShapes as (isCCW?: boolean) => THREE.Shape[])(true);
-      shapes.forEach((shape) => {
-        geos.push(new THREE.ExtrudeGeometry(shape, extrude));
-      });
-    });
-    const merged = new THREE.Group();
-    geos.forEach((g) => merged.add(new THREE.Mesh(g)));
-    const box = new THREE.Box3().setFromObject(merged);
-    const center = new THREE.Vector3();
-    box.getCenter(center);
-    const size = new THREE.Vector3();
-    box.getSize(size);
-    return { geos, center, size };
-  }, [data]);
+  const geometries = useCrestGeometry();
+
 
   const material = useMemo(
     () =>
