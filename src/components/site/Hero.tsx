@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,6 +10,10 @@ if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 export function Hero() {
   const rootRef = useRef<HTMLElement>(null);
   const canvasWrapRef = useRef<HTMLDivElement>(null);
+  // Once the hero has fully scrolled out, the 3D canvas is unmounted so it
+  // never renders alongside the Problem section's shard scene.
+  const [heroPast, setHeroPast] = useState(false);
+
 
   useGSAP(
     () => {
@@ -22,7 +26,7 @@ export function Hero() {
         .from(".hero-cue", { opacity: 0, duration: 0.6 }, "-=0.3");
 
       // Fade the 3D canvas out as the hero exits so it can't bleed into
-      // sections below. When opacity hits 0 we also drop pointer events.
+      // sections below, then unmount it entirely once the hero is off screen.
       if (canvasWrapRef.current && rootRef.current) {
         const wrap = canvasWrapRef.current;
         gsap.to(wrap, {
@@ -34,10 +38,17 @@ export function Hero() {
             end: "bottom top",
             scrub: true,
             onUpdate: (self) => {
-              wrap.style.pointerEvents = self.progress > 0.98 ? "none" : "none";
+              wrap.style.pointerEvents = "none";
               wrap.style.visibility = self.progress >= 1 ? "hidden" : "visible";
             },
           },
+        });
+
+        ScrollTrigger.create({
+          trigger: rootRef.current,
+          start: "bottom top",
+          end: "max",
+          onToggle: (self) => setHeroPast(self.isActive),
         });
       }
     },
@@ -51,8 +62,9 @@ export function Hero() {
       className="relative z-0 h-[100svh] w-full overflow-hidden bg-[#050505]"
     >
       <div ref={canvasWrapRef} className="pointer-events-none absolute inset-0 z-0">
-        <Crest3D />
+        {!heroPast && <Crest3D />}
       </div>
+
       <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-black/60 via-transparent to-black/80" />
 
       <div className="relative z-[2] flex h-full flex-col justify-end px-6 pb-16 md:px-14 md:pb-24">
