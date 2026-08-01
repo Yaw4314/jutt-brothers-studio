@@ -57,30 +57,37 @@ function Shard({ spec, geometry }: { spec: ShardSpec; geometry: THREE.BufferGeom
     gsap.set(g.scale, { x: 0.2, y: 0.2, z: 0.2 });
 
     const index = SHARDS.indexOf(spec);
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: { trigger: "#problem", start: "top 72%", once: true },
-        delay: index * 0.07,
-      });
-      tl.to(g.position, {
-        x: spec.pos[0],
-        y: spec.pos[1],
-        z: spec.pos[2],
-        duration: 1.6,
-        ease: "expo.out",
-      })
-        .to(
-          g.rotation,
-          { x: spec.rot[0], y: spec.rot[1], z: spec.rot[2], duration: 2.1, ease: "power3.out" },
-          0,
-        )
-        .to(
-          g.scale,
-          { x: spec.scale, y: spec.scale, z: spec.scale, duration: 1.4, ease: "back.out(1.6)" },
-          0,
-        );
+    const tl = gsap.timeline({ paused: true, delay: index * 0.07 });
+    tl.to(g.position, {
+      x: spec.pos[0],
+      y: spec.pos[1],
+      z: spec.pos[2],
+      duration: 1.6,
+      ease: "expo.out",
+    })
+      .to(
+        g.rotation,
+        { x: spec.rot[0], y: spec.rot[1], z: spec.rot[2], duration: 2.1, ease: "power3.out" },
+        0,
+      )
+      .to(
+        g.scale,
+        { x: spec.scale, y: spec.scale, z: spec.scale, duration: 1.4, ease: "back.out(1.6)" },
+        0,
+      );
+
+    const st = ScrollTrigger.create({
+      trigger: "#problem",
+      start: "top 85%",
+      once: true,
+      onEnter: () => tl.play(),
     });
-    return () => ctx.revert();
+    if (st.isActive || st.progress > 0) tl.play();
+
+    return () => {
+      st.kill();
+      tl.kill();
+    };
   }, [spec]);
 
   useFrame((state) => {
