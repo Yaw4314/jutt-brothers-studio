@@ -160,7 +160,7 @@ function Headline() {
   );
 }
 
-function Scene() {
+function Scene({ lowPower }: { lowPower: boolean }) {
   const geometries = useCrestShardGeometries();
   const groupRef = useRef<THREE.Group>(null);
   // Focus point for DepthOfField; mutated in place and pushed to the effect each frame.
