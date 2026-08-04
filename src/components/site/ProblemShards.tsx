@@ -2,6 +2,7 @@ import { Suspense, useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, MeshTransmissionMaterial, Text } from "@react-three/drei";
 import { Bloom, DepthOfField, EffectComposer } from "@react-three/postprocessing";
+import type { DepthOfFieldEffect } from "postprocessing";
 import * as THREE from "three";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -157,26 +158,50 @@ function Headline() {
 function Scene() {
   const geometries = useCrestShardGeometries();
   const groupRef = useRef<THREE.Group>(null);
+  // Focus point for DepthOfField; mutated in place and pushed to the effect each frame.
+  const focusTarget = useRef(new THREE.Vector3(0, 0, 0));
+  const focusGoal = useRef({ x: 0, y: 0 });
+  const dofRef = useRef<DepthOfFieldEffect>(null);
 
   useEffect(() => {
     const g = groupRef.current;
     if (!g) return;
     if (typeof window === "undefined") return;
     const fine = window.matchMedia?.("(pointer: fine)");
-    if (fine && !fine.matches) return;
+    if (fine && !fine.matches) {
+      console.warn(
+        "[ProblemShards] pointer parallax skipped: matchMedia('(pointer: fine)') did not match",
+      );
+      return;
+    }
 
     const toX = gsap.quickTo(g.position, "x", { duration: 1.1, ease: "power3.out" });
     const toY = gsap.quickTo(g.position, "y", { duration: 1.1, ease: "power3.out" });
+    const toRotX = gsap.quickTo(g.rotation, "x", { duration: 1.2, ease: "power3.out" });
+    const toRotY = gsap.quickTo(g.rotation, "y", { duration: 1.2, ease: "power3.out" });
     const onMove = (e: PointerEvent) => {
       if (e.pointerType === "touch") return;
       const nx = (e.clientX / window.innerWidth) * 2 - 1;
       const ny = (e.clientY / window.innerHeight) * 2 - 1;
-      toX(nx * 0.55);
-      toY(-ny * 0.4);
+      toX(nx * 1.4);
+      toY(-ny * 1.0);
+      toRotX(ny * 0.12);
+      toRotY(nx * 0.12);
+      focusGoal.current.x = nx * 0.8;
+      focusGoal.current.y = -ny * 0.8;
     };
     window.addEventListener("pointermove", onMove, { passive: true });
     return () => window.removeEventListener("pointermove", onMove);
   }, []);
+
+  useFrame((_, dt) => {
+    const lerp = 1 - Math.pow(0.002, Math.min(dt, 0.1));
+    const v = focusTarget.current;
+    v.x += (focusGoal.current.x - v.x) * lerp;
+    v.y += (focusGoal.current.y - v.y) * lerp;
+    const dof = dofRef.current;
+    if (dof) dof.target = v;
+  });
 
   return (
     <>
@@ -193,7 +218,7 @@ function Scene() {
       </group>
       <EffectComposer enableNormalPass={false}>
         {/* Headline plane sits at z = 0, camera at z = 9 */}
-        <DepthOfField target={[0, 0, 0]} focalLength={0.2} bokehScale={2.4} height={480} />
+        <DepthOfField ref={dofRef} target={focusTarget.current} focalLength={0.2} bokehScale={2.4} height={480} />
         <Bloom intensity={0.5} luminanceThreshold={0.72} luminanceSmoothing={0.25} mipmapBlur />
       </EffectComposer>
     </>

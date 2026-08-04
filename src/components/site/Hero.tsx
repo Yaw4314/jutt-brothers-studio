@@ -69,7 +69,7 @@ export function Hero() {
 
       <div className="relative z-[2] flex h-full flex-col justify-end px-6 pb-16 md:px-14 md:pb-24">
         <p className="hero-eyebrow font-sans text-[11px] uppercase tracking-[0.32em] text-gold">
-          Rawalpindi &middot; Hospitality web design
+          Islamabad &middot; Hospitality web design, nationwide
         </p>
         <h1 className="hero-title mt-5 font-display text-[clamp(2.4rem,6.5vw,5.5rem)] leading-[1.02] tracking-[0.02em] text-ink">
           <span className="block">The house of</span>

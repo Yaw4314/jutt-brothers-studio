@@ -20,9 +20,8 @@ export function About() {
         </div>
         <div className="space-y-6 font-sans text-[15px] leading-[1.85] text-ink/80 md:text-base">
           <p data-reveal>
-            Jutt Brothers is a small design and engineering studio based in Rawalpindi. We work
-            almost exclusively with independent restaurants, cafes, and rooftops across Islamabad
-            and the twin cities.
+            Jutt Brothers is a small design and engineering studio based in Islamabad. We work
+            with independent restaurants and caf&eacute;s across Pakistan.
           </p>
           <p data-reveal>
             We started because the hospitality scene here was outgrowing what the local web could
