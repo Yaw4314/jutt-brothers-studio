@@ -221,16 +221,26 @@ function Scene({ lowPower }: { lowPower: boolean }) {
           <Shard key={i} spec={spec} geometry={geometries[spec.geo % geometries.length]} />
         ))}
       </group>
-      <EffectComposer enableNormalPass={false}>
-        {/* Headline plane sits at z = 0, camera at z = 9 */}
-        <DepthOfField ref={dofRef} target={focusTarget.current} focalLength={0.2} bokehScale={2.4} height={480} />
-        <Bloom intensity={0.5} luminanceThreshold={0.72} luminanceSmoothing={0.25} mipmapBlur />
-      </EffectComposer>
+      {!lowPower && (
+        <EffectComposer enableNormalPass={false}>
+          {/* Headline plane sits at z = 0, camera at z = 9 */}
+          <DepthOfField
+            ref={dofRef}
+            target={focusTarget.current}
+            focalLength={0.08}
+            focusDistance={0.0}
+            bokehScale={0.9}
+            height={360}
+          />
+          <Bloom intensity={0.35} luminanceThreshold={0.8} luminanceSmoothing={0.25} mipmapBlur />
+        </EffectComposer>
+      )}
     </>
   );
 }
 
 export function ProblemShards() {
+  const lowPower = useLowPowerDevice();
   const gl = useMemo(
     () => ({ antialias: true, toneMapping: THREE.ACESFilmicToneMapping }),
     [],
@@ -239,7 +249,7 @@ export function ProblemShards() {
     <Canvas camera={{ position: [0, 0, 9], fov: 42 }} gl={gl} dpr={[1, 2]}>
       <color attach="background" args={["#050505"]} />
       <Suspense fallback={null}>
-        <Scene />
+        <Scene lowPower={lowPower} />
       </Suspense>
     </Canvas>
   );
