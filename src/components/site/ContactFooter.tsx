@@ -103,7 +103,7 @@ export function ContactFooter() {
         <div className="mt-24 flex flex-col items-start justify-between gap-6 border-t border-[color:var(--border)] pt-8 md:flex-row md:items-center">
           <p className="font-display text-[13px] tracking-[0.32em] text-ink">JUTT BROTHERS</p>
           <p className="text-[11px] uppercase tracking-[0.24em] text-ink-dim">
-            Rawalpindi &middot; Est. hospitality
+            Islamabad &middot; Est. hospitality
           </p>
           <p className="text-[11px] uppercase tracking-[0.24em] text-ink-dim">
             &copy; {new Date().getFullYear()} — all rights reserved
