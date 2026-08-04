@@ -113,21 +113,19 @@ function Shard({ spec, geometry }: { spec: ShardSpec; geometry: THREE.BufferGeom
     <group ref={outer}>
       <group ref={inner}>
         <mesh geometry={geometry}>
-          <MeshTransmissionMaterial
+          <meshPhysicalMaterial
             transmission={1}
-            thickness={0.6}
-            roughness={0.05}
-            distortion={0.5}
-            distortionScale={0.4}
-            chromaticAberration={0.04}
-            ior={1.4}
+            thickness={0.5}
+            roughness={0.04}
+            metalness={0}
+            ior={1.3}
             color="#E8C77A"
             attenuationColor="#E8C77A"
-            attenuationDistance={1.2}
-            backside
-            samples={6}
+            attenuationDistance={1.4}
+            clearcoat={1}
+            clearcoatRoughness={0.05}
             envMapIntensity={1.6}
-            resolution={256}
+            transparent
           />
         </mesh>
       </group>
